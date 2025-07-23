@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Google Index Checker</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Google Index Checker</h1>
+    <form id="check-form">
+      <label for="url-input"
+        >Enter your Domains* (Each Domain on a separate line):</label
+      ><br />
+      <textarea id="url-input" name="urls"></textarea><br /><br />
+      <button id="submit-btn" type="submit">Check Index Status</button>
+      <p id="checking-message" style="display: none">Checking...</p>
+    </form>
+
+    <div class="error" id="error-message"></div>
+
+    <table id="results-table" style="display: none">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="results-body"></tbody>
+    </table>
+
+    <script>
+      document
+        .getElementById("check-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const textarea = document.getElementById("url-input");
+          const urls = textarea.value
+            .split("\n")
+            .map((line) => line.trim())
+            .filter((line) => line.length > 0);
+
+          document.getElementById("checking-message").style.display = "block";
+          document.getElementById("error-message").textContent = "";
+          document.getElementById("results-table").style.display = "none";
+
+          try {
+            const response = await fetch("/check", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ urls }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || "Unknown error");
+            }
+
+            const tbody = document.getElementById("results-body");
+            tbody.innerHTML = "";
+
+            data.forEach((item) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `<td>${item.url}</td><td>${item.status}</td>`;
+              tbody.appendChild(row);
+            });
+
+            document.getElementById("results-table").style.display = "table";
+          } catch (err) {
+            document.getElementById("error-message").textContent = err.message;
+          } finally {
+            document.getElementById("checking-message").style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

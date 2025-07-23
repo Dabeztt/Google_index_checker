@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  max-width: auto;
+  margin: auto;
+}
+
+#url-input {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#submit-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#submit-btn:hover {
+  background-color: #0056b3;
+}
+
+#submit-btn:focus {
+  outline: 2px solid #333;
+  outline-offset: 2px;
+}
+
+#results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+#results-table th,
+#results-table td {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: left;
+}
+
+#results-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#results-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.error {
+  color: red;
+  margin-top: 1rem;
+}
+
+#checking-message {
+  display: none;
+  font-weight: bold;
+  margin-top: 1rem;
+}
